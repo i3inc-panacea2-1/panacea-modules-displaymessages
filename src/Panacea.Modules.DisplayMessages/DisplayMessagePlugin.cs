@@ -1,5 +1,6 @@
 ﻿using Panacea.Core;
 using Panacea.Modularity;
+using Panacea.Modularity.Billing;
 using Panacea.Modularity.UiManager;
 using Panacea.Modules.DisplayMessages.Models;
 using Panacea.Modules.DisplayMessages.ViewModels;
@@ -42,13 +43,18 @@ namespace Panacea.Modules.DisplayMessages
 
                 try
                 {
-                    //var userServices = Host.User.ActiveServices?.Select(p => p.Plugin).Distinct().ToList();
-                    //var serv = obj.Data.Services;
-                    //if (serv.Count > 0 && serv.All(Host.IsPluginFree)) return;
+                    if(_core.TryGetBilling(out IBillingManager billing))
+                    {
+                        var userServices = billing.GetActiveUserServicesSilently()
+                                                    .Select(p => p.Plugin)
+                                                    .Distinct()
+                                                    .ToList();
+                        var serv = obj.Data.Services;
+                        if (serv.Count > 0 && serv.All(billing.IsPluginFree)) return;
 
-                    //if (serv.Count >= 0 && Host.User.ID != null && serv.Any(s => userServices?.Contains(s) == true))
-                    //    return;
-
+                        if (serv.Count >= 0 && _core.UserService.User.Id != null && serv.Any(s => userServices?.Contains(s) == true))
+                            return;
+                    }
                 }
                 catch
                 {
@@ -61,7 +67,8 @@ namespace Panacea.Modules.DisplayMessages
                         case "notify":
                             var content = new DisplayMessageNotificationViewModel()
                             {
-                                Data = obj.Data
+                                Data = obj.Data,
+                                Closable = true
                             };
 
                             ShowNotification(obj.Data, content);
@@ -111,7 +118,6 @@ namespace Panacea.Modules.DisplayMessages
             {
                 if (obj.StartInFullScreen)
                 {
-
                     ui.Navigate(content);
                     if (!obj.AllowClose) ui.EnableFullscreen();
 
@@ -195,7 +201,7 @@ namespace Panacea.Modules.DisplayMessages
 
         }
 
-        void ShowNotification(DisplayMessageData obj, PopupViewModelBase<object> content)
+        async void ShowNotification(DisplayMessageData obj, DisplayMessageNotificationViewModel content)
         {
             if (_core.TryGetUiManager(out IUiManager ui))
             {
@@ -225,11 +231,13 @@ namespace Panacea.Modules.DisplayMessages
                         t.Enabled = false;
                         Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                         {
-                            ui.Refrain(content);
+                            content.Close() ;
                         }));
                     };
                     t.Start();
                 }
+                await content.GetTask();
+                ui.Refrain(content);
             }
         }
 

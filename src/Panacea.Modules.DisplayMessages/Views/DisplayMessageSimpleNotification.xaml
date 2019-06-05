@@ -5,15 +5,17 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Panacea.Modules.DisplayMessages.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mi="clr-namespace:Panacea.Controls;assembly=Panacea.Controls"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    mi:Material.RelativeFontSizeRatio="1.0">
     <Grid>
         <Button
             Padding="10,0"
             VerticalAlignment="Stretch"
             Background="Transparent"
-            Command="{Binding ClosableCommand}">
+            Command="{Binding CloseCommand}">
             <Button.Style>
                 <Style BasedOn="{x:Null}" TargetType="Button">
                     <Style.Setters>
@@ -56,7 +58,7 @@
                 <TextBlock
                     Padding="10"
                     Foreground="White"
-                    Text="{Binding ElementName=Main, Path=DisplayMessageData.Text}"
+                    Text="{Binding Data.Text}"
                     TextWrapping="Wrap" />
                 <TextBlock
                     Name="timetxt"
@@ -64,7 +66,9 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Foreground="White"
-                    TextWrapping="Wrap" />
+                    TextWrapping="Wrap" 
+                    Text="{Binding Time}"
+                    mi:Material.RelativeFontSizeRatio="0.9"/>
             </Grid>
         </Button>
 

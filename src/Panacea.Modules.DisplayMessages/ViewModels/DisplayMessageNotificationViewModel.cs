@@ -19,8 +19,9 @@ namespace Panacea.Modules.DisplayMessages.ViewModels
             CloseCommand = new RelayCommand(args =>
             {
                 if (Closable)
-                    SetResult(null);
+                    taskCompletionSource.TrySetResult(null);
             });
+            Time = DateTime.Now.ToShortTimeString();
         }
 
         DisplayMessageData _data;
@@ -34,6 +35,13 @@ namespace Panacea.Modules.DisplayMessages.ViewModels
             }
         }
 
+        public void Close()
+        {
+            taskCompletionSource.TrySetResult(null);
+        }
+
         public RelayCommand CloseCommand { get; }
+
+        public string Time { get; }
     }
 }
