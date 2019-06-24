@@ -45,7 +45,7 @@ namespace Panacea.Modules.DisplayMessages
                 {
                     if(_core.TryGetBilling(out IBillingManager billing))
                     {
-                        var userServices = billing.GetActiveUserServicesSilently()
+                        var userServices = billing.GetActiveUserServices()
                                                     .Select(p => p.Plugin)
                                                     .Distinct()
                                                     .ToList();
