@@ -84,6 +84,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
     <Compile Include="RichTextBoxHelper.cs" />
     <Compile Include="ViewModels\DisplayMessageNotificationViewModel.cs" />
     <Compile Include="ViewModels\ImageViewerViewModel.cs" />
@@ -100,6 +103,10 @@
     <Compile Include="DisplayMessagePlugin.cs" />
     <Compile Include="Models\DisplayMessageData.cs" />
     <Compile Include="Models\DisplayMessageModel.cs" />
+    <Page Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\DisplayMessageSimpleNotification.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
