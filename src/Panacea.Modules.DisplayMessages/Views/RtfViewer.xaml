@@ -12,8 +12,8 @@
         <RichTextBox
             Name="RichTextBox1"
             Margin="0"
+            local:RichTextBoxHelper.DocumentRtf="{Binding Document}"
             BorderThickness="0"
-            IsReadOnly="True"
-            local:RichTextBoxHelper.DocumentRtf="{Binding Document}"/>
+            IsReadOnly="True" />
     </Grid>
 </UserControl>
